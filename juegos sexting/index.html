@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Concientización sobre el Sexting</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 700px; margin: auto; }
+        button { margin: 5px 0; width: 100%; padding: 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Juego de Concientización sobre el Sexting</h2>
+    <div id="pregunta"></div>
+    <div id="opciones"></div>
+    <div id="resultado"></div>
+
+    <py-script>
+chats = [
+    {
+        "pregunta": """Camila: A una amiga le reenviaron una foto íntima.
+Sofi: ¿Y eso cuánto puede circular?
+Martín: Si cada persona se la pasa a 3, eso se multiplica...
+¿Cuántas personas podrían haberla visto ya?""",
+        "opciones": ["Solo 9 personas", "Unas 15", "Más de 30 personas"],
+        "correcta": 2,
+        "explicacion": "3 + 9 + 27 = 39. ¡Se viraliza mucho más rápido de lo que parece!"
+    },
+    # Agregá más preguntas aquí...
+]
+
+indice = 0
+puntaje = 0
+
+def mostrar_chat():
+    global indice
+    if indice >= len(chats):
+        Element("pregunta").element.innerText = f"¡Juego terminado! Tu puntaje final fue {puntaje} de {len(chats)}."
+        Element("opciones").element.innerHTML = ""
+        return
+
+    chat = chats[indice]
+    Element("pregunta").element.innerText = chat["pregunta"]
+    html = ""
+    for i, opcion in enumerate(chat["opciones"]):
+        html += f"<button py-click='verificar_respuesta({i})'>{opcion}</button><br>"
+    Element("opciones").element.innerHTML = html
+
+def verificar_respuesta(seleccion):
+    global puntaje, indice
+    chat = chats[indice]
+    if seleccion == chat["correcta"]:
+        puntaje += 1
+        mensaje = "✅ Correcto: " + chat["explicacion"]
+    else:
+        mensaje = "❌ Incorrecto: " + chat["explicacion"]
+    Element("resultado").element.innerText = mensaje
+    indice += 1
+    mostrar_chat()
+
+mostrar_chat()
+    </py-script>
+</body>
+</html>
